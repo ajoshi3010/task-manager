@@ -11,12 +11,17 @@
   "dependencies": {
     "@prisma/client": "^5.20.0",
     "axios": "^1.7.7",
+    "bcrypt": "^5.1.1",
+    "jose": "^5.9.4",
+    "jsonwebtoken": "^9.0.2",
     "next": "14.2.15",
     "prisma": "^5.20.0",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
