@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+```markdown
+# Task Manager
 
-First, run the development server:
+A simple yet effective task management application built with Next.js, Prisma, and PostgreSQL. This application allows users to create, manage, and delete tasks with user authentication and JWT-based session management.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- User authentication (Register and Login)
+- Create, Read, Update, and Delete (CRUD) tasks
+- Mark tasks as completed
+- Responsive design
+- JWT authentication using cookies
+- Multi-user support
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Frontend**: Next.js, React, Tailwind CSS
+- **Backend**: Node.js, Prisma
+- **Database**: PostgreSQL
+- **Authentication**: JWT (JSON Web Tokens)
 
-## Learn More
+## Installation
 
-To learn more about Next.js, take a look at the following resources:
+### Prerequisites
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Node.js (v14 or later)
+- PostgreSQL
+- npm or yarn
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Steps
 
-## Deploy on Vercel
+1. **Clone the repository**:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   git clone https://github.com/ajoshi3010/task-manager.git
+   cd task-manager
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Set up the database**:
+
+   - Create a new PostgreSQL database.
+   - Update the `DATABASE_URL` in your `.env.local` file.
+
+   ```env
+   DATABASE_URL=postgresql://username:password@localhost:5432/yourdatabase
+   JWT_SECRET=your_jwt_secret
+   ```
+
+4. **Run Prisma migrations**:
+
+   ```bash
+   npx prisma migrate dev
+   ```
+
+5. **Start the development server**:
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+6. **Open your browser and navigate to** `http://localhost:3000`
+
+## Usage
+
+- **Register**: Create a new user account.
+- **Login**: Authenticate using your email and password.
+- **Manage Tasks**: Add, edit, delete, and mark tasks as completed.
+
+## API Endpoints
+
+### Authentication
+
+- **POST** `/api/auth/login` 
+  - Request Body: `{ "email": "user@example.com", "password": "yourpassword" }`
+  - Response: Returns a JWT token set as a cookie.
+
+- **POST** `/api/auth/register`
+  - Request Body: `{ "email": "user@example.com", "password": "yourpassword" }`
+  - Response: Confirmation message of successful registration.
+
+- **POST** `/api/auth/logout`
+  - Response: Clears the JWT cookie and logs out the user.
+
+- **GET** `/api/auth/check`
+  - Response: Returns the logged-in user's email if authenticated.
+
+### Tasks
+
+- **GET** `/api/tasks`
+  - Response: Returns a list of tasks for the authenticated user.
+
+- **GET** `/api/tasks/:id`
+  - Response: Returns the details of a specific task.
+
+- **POST** `/api/tasks`
+  - Request Body: `{ "title": "Task Title", "description": "Task Description" }`
+  - Response: Returns the newly created task.
+
+- **PUT** `/api/tasks/:id`
+  - Request Body: `{ "title": "Updated Title", "description": "Updated Description", "completed": true }`
+  - Response: Returns the updated task.
+
+- **DELETE** `/api/tasks/:id`
+  - Response: Confirmation message of successful deletion.
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+Feel free to modify any sections according to your project specifics. This template gives a comprehensive overview of your Task Manager application and guides users through setup and usage. If you have any additional information to include or specific formatting preferences, let me know!
