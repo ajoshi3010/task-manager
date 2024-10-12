@@ -18,7 +18,7 @@ export default function TaskDetails({ task, onEdit, onDelete, onBack }: TaskDeta
         {task.title}
       </p>
       
-      <p className="text-sm text-gray-700 mb-4 hover:text-gray-900 transition-colors duration-300">
+      <p className="text-sm text-gray-700 mb-4 break-words">
         {task.description}
       </p>
       

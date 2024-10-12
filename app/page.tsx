@@ -113,9 +113,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-800 to-gray-600 p-10 overflow-x-hidden">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col lg:flex-row justify-between items-center mb-6">
         <h1 className="text-4xl font-bold text-white">Task Manager</h1>
-        <div className="flex items-center">
+        <div className="flex items-center mt-4 lg:mt-0">
           <span className="text-white mr-4">{userEmail}</span>
           <button
             onClick={handleLogout}
