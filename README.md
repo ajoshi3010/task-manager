@@ -113,11 +113,3 @@ A simple yet effective task management application built with Next.js, Prisma, a
 
 - **DELETE** `/api/tasks/:id`
   - Response: Confirmation message of successful deletion.
-
-## License
-
-This project is licensed under the MIT License.
-
----
-
-Feel free to modify any sections according to your project specifics. This template gives a comprehensive overview of your Task Manager application and guides users through setup and usage. If you have any additional information to include or specific formatting preferences, let me know!
