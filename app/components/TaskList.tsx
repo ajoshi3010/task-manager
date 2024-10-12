@@ -6,6 +6,14 @@ interface TaskListProps {
   onSelectTask: (task: Task) => void;
 }
 
+// Helper function to truncate the task description
+const truncateText = (text: string, limit: number) => {
+  if (text.length > limit) {
+    return text.slice(0, limit) + '...';
+  }
+  return text;
+};
+
 export default function TaskList({ tasks, onDelete, onSelectTask }: TaskListProps) {
   return (
     <div className="bg-white shadow-md rounded-lg p-6 overflow-y-auto h-96">
@@ -27,9 +35,9 @@ export default function TaskList({ tasks, onDelete, onSelectTask }: TaskListProp
                 {task.title}
               </p>
 
-              {/* Subtle Hover Effect for Task Description */}
-              <p className="text-sm text-gray-600 hover:text-gray-800 transition-colors duration-300">
-                {task.description}
+              {/* Truncated Task Description */}
+              <p className="text-sm text-gray-600 hover:text-gray-800 transition-colors duration-300 truncate">
+                {truncateText(task.description, 20)} {/* Limit description to 50 characters */}
               </p>
             </div>
 

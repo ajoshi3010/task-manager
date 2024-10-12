@@ -53,6 +53,7 @@ export default function Home() {
       },
     });
     setTasks(tasks.filter((task) => task.id !== id));
+    setSelectedTask(null); // Clear selected task after deletion
   };
 
   // Handle select task (for details and editing)
@@ -106,7 +107,7 @@ export default function Home() {
             isEditing ? (
               <TaskForm task={selectedTask} onSave={handleSaveTask} />
             ) : (
-              <TaskDetails task={selectedTask} onEdit={() => setIsEditing(true)} />
+              <TaskDetails task={selectedTask} onEdit={() => setIsEditing(true)} onDelete={handleDelete} />
             )
           ) : (
             <TaskForm onSave={handleSaveTask} />
