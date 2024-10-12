@@ -1,8 +1,8 @@
-
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken'
-
+import jwt from 'jsonwebtoken';
+import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
 export async function POST(request: Request) {
@@ -24,5 +24,9 @@ export async function POST(request: Request) {
 
   const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
 
-  return new Response(JSON.stringify({ token }), { status: 200 });
+  // Set the token as a cookie
+  const response = NextResponse.json({ message: 'Login successful' });
+  response.cookies.set('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' }); // Set cookie options as needed
+
+  return response;
 }

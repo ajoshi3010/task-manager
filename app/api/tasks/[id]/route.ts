@@ -1,28 +1,23 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server'; // Import NextRequest
 import prisma from '@/lib/prisma';
-import jwt from 'jsonwebtoken';
+import { jwtVerify } from 'jose';
 
-const JWT_SECRET = process.env.JWT_SECRET as string; // Ensure you have this in your .env.local file
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET as string);
 
-// Helper function to verify JWT
-function verifyJWT(req: Request) {
-  const authHeader = req.headers.get('authorization');
-  if (!authHeader) {
-    throw new Error('Authorization header is missing');
+async function verifyJWTFromCookies(req: NextRequest) { // Change to NextRequest
+  const cookie = req.cookies.get('token');
+  if (!cookie) {
+    throw new Error('Unauthorized');
   }
-  const token = authHeader.split(' ')[1];
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    return decoded; // You can return user details from decoded token
-  } catch (error) {
-    throw new Error('Invalid token');
-  }
+
+  const token = cookie.value; // Get the token from cookies
+  const { payload } = await jwtVerify(token, JWT_SECRET);
+  return payload; // Return decoded payload
 }
 
-// GET /api/tasks/:id (Fetch a task by ID)
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    verifyJWT(request); // Verifying the token
+    const { userId } = await verifyJWTFromCookies(request); // Verify token from cookies
     const { id } = params;
     const task = await prisma.task.findUnique({
       where: { id: Number(id) },
@@ -32,7 +27,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
     }
     return NextResponse.json(task);
   } catch (error) {
-    // Handle the 'unknown' type by asserting it is an instance of 'Error'
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 401 });
     }
@@ -40,10 +34,9 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 }
 
-// PUT /api/tasks/:id (Update a task by ID)
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    verifyJWT(request); // Verifying the token
+    const { userId } = await verifyJWTFromCookies(request); // Verify token from cookies
     const { id } = params;
     const { title, description, completed } = await request.json();
     const task = await prisma.task.update({
@@ -59,10 +52,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-// DELETE /api/tasks/:id (Delete a task by ID)
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    verifyJWT(request); // Verifying the token
+    const { userId } = await verifyJWTFromCookies(request); // Verify token from cookies
     const { id } = params;
     await prisma.task.delete({
       where: { id: Number(id) },

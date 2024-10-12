@@ -1,24 +1,18 @@
-import { NextResponse } from 'next/server'; // Import NextResponse for responses
+import { NextResponse, NextRequest } from 'next/server'; // Import NextResponse and NextRequest
 import { jwtVerify } from 'jose'; // Use jose for JWT verification
 import prisma from '@/lib/prisma'; // Import the Prisma client
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET as string); // Encode the JWT secret
 
-export async function GET(request: Request) {
-  const authHeader = request.headers.get('authorization');
-  if (!authHeader) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
-  }
-
-  const token = authHeader.split(' ')[1]; // Extract the token from the header
-
-  if (!token) {
+export async function GET(request: NextRequest) { // Use NextRequest here
+  const cookie = request.cookies.get('token'); // Get the token from cookies
+  if (!cookie || !cookie.value) { // Check if cookie exists and has a value
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
 
   try {
     // Verify the token and get the payload
-    const { payload } = await jwtVerify(token, JWT_SECRET);
+    const { payload } = await jwtVerify(cookie.value, JWT_SECRET); // Use cookie.value
     const { userId } = payload as { userId: number }; // Extract userId from payload
 
     // Fetch tasks specific to the user
@@ -35,18 +29,17 @@ export async function GET(request: Request) {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) { // Use NextRequest here
   const { title, description } = await request.json();
-  const authHeader = request.headers.get('authorization');
-  const token = authHeader?.split(' ')[1];
+  const cookie = request.cookies.get('token'); // Get the token from cookies
 
-  if (!token) {
+  if (!cookie || !cookie.value) { // Check if cookie exists and has a value
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
 
   try {
     // Verify the token and get the payload
-    const { payload } = await jwtVerify(token, JWT_SECRET);
+    const { payload } = await jwtVerify(cookie.value, JWT_SECRET); // Use cookie.value
     const { userId } = payload as { userId: number }; // Extract userId from payload
 
     // Create a new task associated with the user

@@ -33,10 +33,6 @@ export default function AuthPage() {
 
       if (response.ok) {
         if (isLogin) {
-          // Store the JWT token on successful login
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('email', email);
-
           // Redirect to homepage or task page
           window.location.href = '/'; // Change as necessary
         } else {
