@@ -4,9 +4,10 @@ interface TaskDetailsProps {
   task: Task;
   onEdit: () => void;
   onDelete: (id: number) => void; // Add onDelete prop
+  onBack: () => void; // Add onBack prop
 }
 
-export default function TaskDetails({ task, onEdit, onDelete }: TaskDetailsProps) {
+export default function TaskDetails({ task, onEdit, onDelete, onBack }: TaskDetailsProps) {
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
       <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text">
@@ -22,6 +23,14 @@ export default function TaskDetails({ task, onEdit, onDelete }: TaskDetailsProps
       </p>
       
       <div className="flex space-x-4">
+        {/* Back Button to return to TaskForm */}
+        <button
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-all duration-300"
+          onClick={onBack} // Call the onBack function when clicked
+        >
+          Back
+        </button>
+
         {/* Edit Task Button */}
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-all duration-300"

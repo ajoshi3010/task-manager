@@ -82,6 +82,18 @@ export default function Home() {
     setSelectedTask(null);
   };
 
+  // Handle marking a task as completed
+  const handleToggleComplete = async (id: number, completed: boolean) => {
+    const updatedTask = await axios.put(`/api/tasks/${id}`, { completed }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    // Update local state
+    setTasks(tasks.map((task) => (task.id === updatedTask.data.id ? updatedTask.data : task)));
+  };
+
   // Handle logout
   const handleLogout = () => {
     localStorage.removeItem('token'); // Clear the token
@@ -109,7 +121,7 @@ export default function Home() {
             isEditing ? (
               <TaskForm task={selectedTask} onSave={handleSaveTask} />
             ) : (
-              <TaskDetails task={selectedTask} onEdit={() => setIsEditing(true)} onDelete={handleDelete} />
+              <TaskDetails task={selectedTask} onEdit={() => setIsEditing(true)} onDelete={handleDelete} onBack={() => setSelectedTask(null)} />
             )
           ) : (
             <TaskForm onSave={handleSaveTask} />
@@ -117,7 +129,12 @@ export default function Home() {
         </div>
 
         {/* Task List (Will move below TaskForm on small screens) */}
-        <TaskList tasks={tasks} onDelete={handleDelete} onSelectTask={handleSelectTask} />
+        <TaskList 
+          tasks={tasks} 
+          onDelete={handleDelete} 
+          onSelectTask={handleSelectTask} 
+          onToggleComplete={handleToggleComplete} // Pass the toggle function
+        />
       </div>
     </div>
   );
