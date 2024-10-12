@@ -10,14 +10,14 @@ export async function middleware(req: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  console.log(authHeader); // Log the authorization header
+
   const token = authHeader.split(' ')[1];
-  console.log("Extracted Token:", token); // Log the extracted token
+
 
   try {
     // Verify the token using jose
     const { payload } = await jwtVerify(token, JWT_SECRET);
-    console.log("Token verified:", payload); // Log the decoded token payload
+
     return NextResponse.next(); // Proceed to the next middleware or route
   } catch (error) {
     console.error("Token verification error:", error); // Log the error
