@@ -100,17 +100,23 @@ export default function Home() {
     router.push('/auth'); // Redirect to the authentication page
   };
 
+  // Retrieve the email from localStorage
+  const email = localStorage.getItem('email') || 'User'; // Default to 'User' if email is not found
+
   return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-500 to-pink-500 p-10 overflow-x-hidden">
-      <h1 className="text-4xl font-bold text-white text-center mb-10">Task Manager</h1>
-      
-      <div className="flex justify-between mb-6">
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-all duration-300"
-        >
-          Logout
-        </button>
+    <div className="min-h-screen bg-gradient-to-r from-gray-800 to-gray-600 p-10 overflow-x-hidden">
+
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-4xl font-bold text-white">Task Manager</h1>
+        <div className="flex items-center">
+          <span className="text-white mr-4">{email}</span>
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-all duration-300"
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
       {/* Responsive grid layout: stack TaskList below TaskForm on smaller screens */}

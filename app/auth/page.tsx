@@ -35,6 +35,8 @@ export default function AuthPage() {
         if (isLogin) {
           // Store the JWT token on successful login
           localStorage.setItem('token', data.token);
+          localStorage.setItem('email', email);
+
           // Redirect to homepage or task page
           window.location.href = '/'; // Change as necessary
         } else {
@@ -53,7 +55,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-r from-gray-800 to-gray-600 flex items-center justify-center p-6">
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text">
           {isLogin ? 'Login' : 'Register'}
