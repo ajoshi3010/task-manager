@@ -24,7 +24,6 @@ export default function Home() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      // Redirect to authentication page if not logged in
       router.push('/auth');
     }
   }, [router]);
@@ -90,8 +89,9 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-500 to-pink-500 p-10">
+    <div className="min-h-screen bg-gradient-to-r from-purple-500 to-pink-500 p-10 overflow-x-hidden">
       <h1 className="text-4xl font-bold text-white text-center mb-10">Task Manager</h1>
+      
       <div className="flex justify-between mb-6">
         <button
           onClick={handleLogout}
@@ -100,9 +100,11 @@ export default function Home() {
           Logout
         </button>
       </div>
-      <div className="grid grid-cols-3 gap-8">
-        <TaskList tasks={tasks} onDelete={handleDelete} onSelectTask={handleSelectTask} />
-        <div className="col-span-2">
+
+      {/* Responsive grid layout: stack TaskList below TaskForm on smaller screens */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Task Form (Will take full width on small screens) */}
+        <div className="col-span-1 lg:col-span-2">
           {selectedTask ? (
             isEditing ? (
               <TaskForm task={selectedTask} onSave={handleSaveTask} />
@@ -113,6 +115,9 @@ export default function Home() {
             <TaskForm onSave={handleSaveTask} />
           )}
         </div>
+
+        {/* Task List (Will move below TaskForm on small screens) */}
+        <TaskList tasks={tasks} onDelete={handleDelete} onSelectTask={handleSelectTask} />
       </div>
     </div>
   );
